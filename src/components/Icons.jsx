@@ -26,7 +26,7 @@ function setIcon(id_Arr, iconDay, colorDay, iconNight=iconDay, colorNight=colorD
     };
     ICON_ID[el] = {
       day: iconDay,
-      night: colorNight
+      night: iconNight
     };
   })
 };
