@@ -11,16 +11,36 @@ const SearchLocation = ({ setLocation, setLongitude, setLatitude }) => {
   const {register, handleSubmit, formState:{ errors }} = useForm();
 
   function getCoordinates(location){
-    axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=0b742b8934784ad41bb88b2d941a6d5a`)
+    var options = {
+      method: 'GET',
+      url: 'https://trueway-geocoding.p.rapidapi.com/Geocode',
+      params: {address: location, language: 'en'},
+      headers: {
+        'x-rapidapi-host': 'trueway-geocoding.p.rapidapi.com',
+        'x-rapidapi-key': 'ef63d944a2msh12d905c0f669fc4p1ee825jsna5df504d0c29'
+      }
+    };
+
+    axios.request(options)
     .then(response => {
-      const [{name , lat , lon}] = response.data;
-      setLongitude(lon);
+      let[{
+        region,
+        country,
+        location:{
+          lat,
+          lng
+        }
+      }] = response.data.results;
+
+      var loc = `${region}, ${country}`;
+      setLocation(loc);
       setLatitude(lat);
-      setLocation(name);
+      setLongitude(lng);
+
     })
-    .catch(error => {
-      console.log(error);
-    });
+    .catch(error =>{
+      console.error(error);
+    })
   }
 
   const onSubmit = (data) => {
@@ -32,11 +52,11 @@ const SearchLocation = ({ setLocation, setLongitude, setLatitude }) => {
       <input
         className="w-full h-10 pl-3 pr-8 text-base placeholder-gray-400 border rounded-lg focus:outline-none font-quicksand"
         type="text" 
-        placeholder="Enter your city/state/country name"
+        placeholder="Enter your address or city/state/country name"
         defaultValue=""
-        {...register("location", {pattern: /^[\w\s]+$/g})}
+        {...register("location", {pattern: /^[\w\s\/,]+$/g})} //eslint-disable-line
       />
-      {errors.location && <Warning>Only alphanumeric characters, underscore and space allowed!</Warning>}
+      {errors.location && <Warning>Only alphanumeric characters, spaces and ",", "/" allowed!</Warning>}
 
       <button type="submit" className="absolute inset-y-0 right-0 h-10 flex items-center px-4 font-bold text-white rounded-r-lg bg-bluegray-500 hover:bg-bluegray-700 
       focus:bg-bluegray-900 font-quicksand">Find</button>
