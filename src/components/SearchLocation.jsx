@@ -32,7 +32,7 @@ const SearchLocation = ({ setLocation, setLongitude, setLatitude }) => {
         }
       }] = response.data.results;
 
-      var loc = `${region}, ${country}`;
+      var loc = region!==undefined ? `${region}, ${country}`: `${country}`;
       setLocation(loc);
       setLatitude(lat);
       setLongitude(lng);
@@ -50,7 +50,7 @@ const SearchLocation = ({ setLocation, setLongitude, setLatitude }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mb-20 relative w-full md:w-1/3">
       <input
-        className="w-full h-10 pl-3 pr-8 text-base placeholder-gray-400 border rounded-lg focus:outline-none font-quicksand"
+        className="w-full h-10 pl-3 pr-8 text-xs md:text-base placeholder-gray-400 border rounded-lg focus:outline-none font-quicksand"
         type="text" 
         placeholder="Enter your address or city/state/country name"
         defaultValue=""
