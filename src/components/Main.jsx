@@ -2,6 +2,8 @@ import Current from './Current';
 import Daily from './Daily';
 import SearchLocation from './SearchLocation';
 import { useState, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import "../transitions/Main.css"
 
 const axios = require('axios');
 
@@ -41,20 +43,29 @@ const Main = () => {
 
   return (
     <div>
-      <div className="my-16 flex flex-col justify-center items-center">
-        <SearchLocation 
-          setLocation={setLocation}
-          setLatitude={setLatitude}
-          setLongitude={setLongitude}
-        />
-        <Current
-          data={current}
-          location={location} 
-        />
-        <Daily 
-          data={daily}
-        />
-      </div>
+      <CSSTransition
+        in={!isLoading}
+        appear={true}
+        timeout={400}
+        classNames="fade"
+      >
+        <div className="my-16 flex flex-col justify-center items-center">
+          <SearchLocation 
+            setLocation={setLocation}
+            setLatitude={setLatitude}
+            setLongitude={setLongitude}
+          />
+          
+          <Current
+            data={current}
+            location={location} 
+          />
+
+          <Daily 
+            data={daily}
+          />
+        </div>
+      </CSSTransition>
     </div>
     
   );

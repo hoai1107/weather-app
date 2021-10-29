@@ -1,17 +1,6 @@
 import styled from "styled-components";
 import Icons from './Icons';
-
-const ICON_COLOR = {
-  800: "text-yellow-400",
-  801: "text-blue-300",
-  802: "text-blue-300",
-  803: "text-blue-300",
-  804: "text-blue-300",
-  600: "text-indigo-200",
-  500: "text-blue-500",
-  300: "text-blue-500",
-  200: "text-indigo-900"
-};
+import { useState } from "react";
 
 const Temperature = styled.div`
   font-size: 3rem;
@@ -37,6 +26,8 @@ const Details = styled.li`
 `;
 
 const Current = ({ data, location }) => {
+  const [color, setColor] = useState();
+
   var {
     dt: timestamp,
     sunrise,
@@ -74,6 +65,7 @@ const Current = ({ data, location }) => {
             sunrise={sunrise}
             sunset={sunset}
             dt={timestamp}
+            setColor={setColor}
           />
           <Temperature>{temp.toFixed(0)}</Temperature>
         </div>
@@ -84,7 +76,7 @@ const Current = ({ data, location }) => {
         <div className="text-lg p-10 rounded-lg bg-white">
           <ul className="flex flex-col gap-4">
             <Details>
-              <div className={`text-4xl font-medium ${ICON_COLOR[weather_id]}`}>{main_weather}</div>
+              <div className={`text-4xl font-medium ${color}`}>{main_weather}</div>
             </Details>
             <Details>
               <h2 className="text-center">{description}</h2>
@@ -101,7 +93,6 @@ const Current = ({ data, location }) => {
           </ul>
         </div>
       </div>
-      
     </div>
   )
 };

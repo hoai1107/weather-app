@@ -1,16 +1,11 @@
-import { WiDaySunny, WiCloudy, WiDayCloudy, WiSnow, WiShowers, WiStormShowers, WiFog, WiNightClear, WiNightCloudy, WiDayRain, WiNightRain, WiDayStormShowers, WiNightStormShowers } from "react-icons/wi";
+import { WiDaySunny, WiCloudy, WiDayCloudy, WiSnow, WiShowers, WiFog, WiNightClear, WiNightCloudy, WiDayRain, WiNightRain, WiDayStormShowers, WiNightStormShowers } from "react-icons/wi";
 
-const ICON_ID = {
-  200: <WiStormShowers />
-};
+const ICON_ID = {};
+const ICON_COLOR = {};
 
-const ICON_COLOR = {
-  200: "text-indigo-900"
-}
-
-function Selectors({ id, size, sunrise, sunset, dt}){
+function Selectors({ id, size, sunrise, sunset, dt, setColor = null}){
   var [icon,color] = (dt >= sunrise && dt <= sunset) ? [ICON_ID[id].day, ICON_COLOR[id].day] : [ICON_ID[id].night, ICON_COLOR[id].night]
-
+  setColor != null ? setColor(color) : void(0);
   return (
     <div className={`text-${size} ${color}`}>
       {icon}
@@ -41,9 +36,12 @@ setIcon([520,521,522,531,300,301,302,310,311,312,313,314,321], <WiShowers />, "t
 setIcon([200,201,202,210,211,212,221,230,231,232], <WiDayStormShowers />, "text-indigo-900", <WiNightStormShowers />);
 
 
-const Icons = ({ id, size, sunrise, sunset, dt}) => {
+const Icons = (props) => {
+  console.log(props);
   return(
-    <Selectors id={id} size={size} sunrise={sunrise} sunset={sunset} dt={dt}/>
+    <Selectors 
+      {...props}
+    />
   )
 };
 
